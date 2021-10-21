@@ -6,6 +6,7 @@ const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
 // selected image 
 let sliders = [];
+console.log(sliders);
 
 
 // If this key doesn't work
@@ -15,7 +16,6 @@ const KEY = "23958567-7c2e86396ff49d988b9f7ef60";
 
 // show images 
 const showImages = (images) => {
-  console.log(images);
   imagesArea.style.display = 'block';
   gallery.innerHTML = '';
   // show gallery title
@@ -41,20 +41,21 @@ const getImages = (query) => {
 let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
-  element.classList.add('added');
+  element.classList.toggle('added');
  
   let item = sliders.indexOf(img);
   if (item === -1) {
     sliders.push(img);
-  } else {
-    alert('Hey, Already added !')
+   } 
+   else {
+    sliders.pop(img);
   }
 }
 var timer
 const createSlider = () => {
   // check slider image length
   if (sliders.length < 2) {
-    alert('Select at least 2 image.')
+    alert('Select at least 2 image.');
     return;
   }
   // crate slider previous next area
@@ -66,19 +67,19 @@ const createSlider = () => {
   <span class="next" onclick="changeItem(1)"><i class="fas fa-chevron-right"></i></span>
   `;
 
-  sliderContainer.appendChild(prevNext)
+  // sliderContainer.appendChild(prevNext);
   document.querySelector('.main').style.display = 'block';
   // hide image aria
   imagesArea.style.display = 'none';
   const duration = document.getElementById('duration').value || 1000;
   sliders.forEach(slide => {
-    let item = document.createElement('div')
+    let item = document.createElement('div');
     item.className = "slider-item";
     item.innerHTML = `<img class="w-100"
     src="${slide}"
     alt="">`;
-    sliderContainer.appendChild(item)
-  })
+    sliderContainer.appendChild(item);
+  });
   changeSlide(0)
   timer = setInterval(function () {
     slideIndex++;
