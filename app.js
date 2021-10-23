@@ -4,10 +4,17 @@ const galleryHeader = document.querySelector('.gallery-header');
 const searchBtn = document.getElementById('search-btn');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
+const search_box = document.getElementById("search");
 // selected image 
 let sliders = [];
-console.log(sliders);
 
+// Search Box 
+search_box.addEventListener("keyup", function (event) {
+  event.preventDefault();
+  if (event.key === "Enter") {
+    searchBtn.click();
+  }
+});
 
 // If this key doesn't work
 // Find the name in the url and go to their website
