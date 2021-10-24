@@ -5,6 +5,7 @@ const searchBtn = document.getElementById("search-btn");
 const sliderBtn = document.getElementById("create-slider");
 const sliderContainer = document.getElementById("sliders");
 const search_box = document.getElementById("search");
+const video_div = document.getElementById("video-player");
 // selected image
 let sliders = [];
 
@@ -44,6 +45,15 @@ const getImages = (query) => {
     .catch((err) => console.log(err));
 };
 
+// Videos
+const getVideo = () => {
+  fetch(`https://pixabay.com/api/videos/?key=${KEY}&q=${search_box.value}`)
+    .then((response) => response.json())
+    .then((data) => showVideos(data.hits))
+    .catch((err) => console.log(err));
+};
+getVideo();
+
 let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
@@ -77,7 +87,7 @@ const createSlider = () => {
   document.querySelector(".main").style.display = "block";
   // hide image aria
   imagesArea.style.display = "none";
-  const duration = document.getElementById("duration").value;
+  const duration = document.getElementById("duration").value || 1000;
   if (duration >= 500) {
     sliders.forEach((slide) => {
       let item = document.createElement("div");
@@ -126,11 +136,22 @@ const changeSlide = (index) => {
 searchBtn.addEventListener("click", function () {
   document.querySelector(".main").style.display = "none";
   clearInterval(timer);
-  const search = document.getElementById("search");
-  getImages(search.value);
+  getImages(search_box.value);
   sliders.length = 0;
 });
 
 sliderBtn.addEventListener("click", function () {
   createSlider();
 });
+const showVideos = hits => {
+
+  hits.forEach((hit) => {
+    // console.log(hit.videos.small.url);
+    const video = hit.videos;
+    video_div.innerHTML = `
+      <video width="${video.small.width}" height="${video.small.height}" controls>
+          <source src="${video.small.url}">
+      </video>
+    `;
+  });
+}
